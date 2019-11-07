@@ -17,3 +17,4 @@ Route::get('/', function () {
 Route::get('/hello', function (){
     return "aaa";
 });
+Route::get('/users', 'Userscontroller@index');
