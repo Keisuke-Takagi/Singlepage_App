@@ -1,20 +1,22 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/hello', function (){
     return "aaa";
 });
+
 Route::get('/users', 'Userscontroller@index');
+
+Route::post('/users', 'Userscontroller@post_sign_in');
+
+Route::get('/users/style', 'Userscontroller@style');
+
+// Authファサードのroutesメソッドを使っている
+Route::get('/books/index', 'BooksController@index');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

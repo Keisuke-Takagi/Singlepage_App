@@ -1,0 +1,162 @@
+.navbar-brand{
+  color: red;
+}
+h1{
+  color: red;
+}
+p{
+}
+form{
+  padding: 0 20px;
+}
+a {
+  text-decoration: none;
+  }
+button{
+  margin: 10px 0;
+}
+a:hover{
+  text-decoration: none!important;
+}
+.error{
+  color: red !important;
+  text-decoration: none;
+}
+.navbar-header{
+  width: 100%;
+}
+.navbar-brand{
+  float: right;
+  color: blue !important;
+}
+
+.login-icon{
+  float: right;
+  height: 50px;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}
+#user-login-icon{
+  color: gray;
+  float: left;
+}
+.login-text{
+  float: right;
+
+}
+.main{
+  width: 100vw;
+  min-height: 300px;
+  padding: 13px;
+}
+.form-input{
+  border: solid 1px black;
+  display: block;
+}
+.destroy_button_box{
+  display: inline-block;
+}
+.edit_button_box{
+  display: inline-block;
+  
+}
+.file_upload_button{
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 7px 10px 10px 10px;
+  text-decoration: none;
+  color: #FFF;
+  background: #a180dc;
+  transition: .4s;
+}
+footer{
+  clear: both;
+    font-size: 85%;
+    color: #fff;
+    display: block;
+    background-color: black;
+}
+ul{
+  display: block;
+  float: left;
+  list-style: none;
+  margin: 3 auto;
+  padding: 0 10px;
+  width: 210px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 3px;
+}
+li{
+  display: list-item;
+  color: gray;
+  z-index: 100;
+}
+a{
+}
+label{
+  margin-top: 3em;
+}
+#footermenu{
+  width: 100vw;
+  display: block;
+  background-color: black;
+  margin: 0 auto;
+  float: left;
+  left: 0%;
+}
+.title{
+  font-weight: bold;
+  color: yellowgreen;
+}
+.footer-link{
+  color: white;
+}
+.footer-link:hover{
+  color: white;
+  text-decoration: underline;
+}
+.edit-book-form{
+}
+.form_book_description{
+  width: 370px;
+  border: solid 1px black;
+  display: block;
+}
+.book-edit-box__title{
+  
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+
+  white-space: nowrap;
+}
+.table-responsive{
+  width: 100%;
+  overflow-x: scroll;
+  width: 98%;
+  padding: 10px;
+}
+.contents_main{
+  padding: 20px 0;
+  width: 100%;
+}
+.book_new_label{
+  display: contents;
+}
+.book-new-box{
+  padding: 10px 0;
+}
+.book_new_title{
+  padding: 0 0 0 20px;
+}
+.menu-flex-box{
+  flex-flow: row-reverse;
+  list-style: none;
+  padding: 0;
+  vertical-align: middle!important;
+}
