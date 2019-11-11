@@ -19,33 +19,37 @@
   </div>
 </header>
 <div class='main'>
-  <h1> 新規登録</h1>
+  <div class="json_main">
+    <h1> 新規登録</h1>
+
+    <h2 class="json_text"></h2>
 
 
-  @if ($errors->any())
-   
-            @foreach ($errors->all() as $error)
+    @if ($errors->any())
+    
+              @foreach ($errors->all() as $error)
 
-                <p class="error">{{ $error }}</p>
+                  <p class="error">{{ $error }}</p>
 
-            @endforeach
+              @endforeach
 
-  @endif
+    @endif
 
-  <form action='../users' method='post' class='new-user-form'>
-  {{ csrf_field() }}
-    <td>
-      <tr>
-        <p>メールアドレス(必須)</p>
-        <input type='text' name='email' value="{{old('email') }}" class='form-input'>
-      </tr>
-      <tr>
-        <p>パスワード(必須)</p>
-        <input type='text' name='password'  value="{{old('password') }}" class='form-input'>
-      </tr>
-    </td>
-    <button type='submit' class='btn btn-success btn-lg'>新規登録</button>
-  </form>
+    <form action='../users' method='post' id='new-user-form'>
+    {{ csrf_field() }}
+      <td>
+        <tr>
+          <p>メールアドレス(必須)</p>
+          <input type='text' name='email' value="{{old('email') }}" class='form-input'>
+        </tr>
+        <tr>
+          <p>パスワード(必須)</p>
+          <input type='text' name='password'  value="{{old('password') }}" class='form-input'>
+        </tr>
+      </td>
+      <button id='user_create_button' type='submit' class='btn btn-success btn-lg'>新規登録</button>
+    </form>
+  </div>
 </div>
 
 

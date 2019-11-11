@@ -15,7 +15,8 @@
   <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
   <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
   <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
-
+  	
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <title>新規登録ページ</title>
 </head>
