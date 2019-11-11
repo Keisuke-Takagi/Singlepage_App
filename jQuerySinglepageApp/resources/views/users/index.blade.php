@@ -8,6 +8,7 @@
 
   ?>
 
+
   <div class='login-icon'>
             <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
             <a href='../login/login'>ログイン</a>
@@ -19,28 +20,24 @@
 </header>
 <div class='main'>
   <h1> 新規登録</h1>
-  <p>
-  @email
 
-  </p>
+
   @if ($errors->any())
    
             @foreach ($errors->all() as $error)
 
-
                 <p class="error">{{ $error }}</p>
+
             @endforeach
 
-
-
-
+  @endif
 
   <form action='../users' method='post' class='new-user-form'>
   {{ csrf_field() }}
     <td>
       <tr>
         <p>メールアドレス(必須)</p>
-        <input type='text' name='email' value="{{old('e') }}" class='form-input'>
+        <input type='text' name='email' value="{{old('email') }}" class='form-input'>
       </tr>
       <tr>
         <p>パスワード(必須)</p>
@@ -50,22 +47,6 @@
     <button type='submit' class='btn btn-success btn-lg'>新規登録</button>
   </form>
 </div>
-@else
 
-<form action='../users' method='post' class='new-user-form'>
-  {{ csrf_field() }}
-    <td>
-      <tr>
-        <p>メールアドレス(必須)</p>
-        <input type='text' name='email' value="" class='form-input'>
-      </tr>
-      <tr>
-        <p>パスワード(必須)</p>
-        <input type='text' name='password'  value="" class='form-input'>
-      </tr>
-    </td>
-    <button type='submit' class='btn btn-success btn-lg'>新規登録</button>
-  </form>
-</div>
-@endif
+
 @endsection

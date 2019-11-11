@@ -1,0 +1,7 @@
+$(function() {
+  $("").on("click",  function() {
+
+
+  });
+  
+});
