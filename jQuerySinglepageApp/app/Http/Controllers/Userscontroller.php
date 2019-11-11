@@ -24,8 +24,7 @@ class Userscontroller extends Controller
   }
 
   public function post_sign_in(Request $request){
-
-
+    $a_error = "";
     // header("Content-type: application/json; charset=UTF-8");
     // $data = $_POST["email_json"];
     // var_dump($data);
@@ -57,8 +56,14 @@ class Userscontroller extends Controller
     
     if($validator->fails() ){
       $error_message = $validator->errors()->toArray();
-
-
+      var_dump($error_message);
+      if(array_key_exists("email", $error_message)){
+        $a_error .= $error_message["email"][0] . "<br>";
+      };
+      if(array_key_exists("password", $error_message)){
+        $a_error .= $error_message["password"][0];
+      };
+      var_dump($a_error);
       // return redirect('/users')
       // ->withErrors($validator)
       // ->withInput($request->all)

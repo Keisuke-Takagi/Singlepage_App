@@ -38,7 +38,7 @@ $(function() {
   //     alert("sucess");
   //     // ここでLaravelのコントローラアクションを非同期呼び出し
 
-  //     $("#new-user-form").submit();
+  //     // $("#new-user-form").submit();
 
   //     // let mainpage = "<p>This is mainpage </p>"
 
