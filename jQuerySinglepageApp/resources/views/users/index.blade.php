@@ -1,15 +1,15 @@
 @extends('layouts.app')
 @section('content')
-  <p>これはbladeファイル</p>
+  <!-- <p>これはbladeファイル</p> -->
   <?php
-  if($_SERVER["REQUEST_METHOD"]  == "POST"){
-    echo "postです";
-  }
+  // if($_SERVER["REQUEST_METHOD"]  == "POST"){
+  //   echo "postです";
+  // }
 
   ?>
 
 
-  <div class='login-icon'>
+  <!-- <div class='login-icon'>
             <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
             <a href='../login/login'>ログイン</a>
           </div>
@@ -22,7 +22,7 @@
   <div class="json_main">
     <h1> 新規登録</h1>
 
-    <h2 class="json_text"></h2>
+    <div class="error_box"></div>
 
 
     @if ($errors->any())
@@ -50,7 +50,7 @@
       <button id='user_create_button' type='submit' class='btn btn-success btn-lg'>新規登録</button>
     </form>
   </div>
-</div>
+</div> -->
 
 
 @endsection

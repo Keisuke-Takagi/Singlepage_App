@@ -21,6 +21,7 @@ a:hover{
 .error{
   color: red !important;
   text-decoration: none;
+  font-size: 23px;
 }
 .navbar-header{
   width: 100%;
@@ -159,4 +160,16 @@ table{
   list-style: none;
   padding: 0;
   vertical-align: middle!important;
+}
+.header_logout{
+  color: #428bca;
+  text-decoration: none;
+  cursor:pointer;
+}
+.link_user_index{
+  color: #428bca;
+  text-decoration: none;
+  cursor:pointer;
+  display: block;
+  float: left;
 }
