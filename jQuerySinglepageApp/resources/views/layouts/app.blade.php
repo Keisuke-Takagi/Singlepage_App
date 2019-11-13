@@ -31,6 +31,7 @@
 
             <div class='login-icon'>
             <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
+      
             <div class="header_right"> 
               <a href='../login/login'>ログイン</a>
             </div>
@@ -43,9 +44,8 @@
 <div class='main'>
   <div class="json_main">
     <h1> 新規登録</h1>
-
     <div class="error_box"></div>
-
+    <p class="header_logout">ログアウトかり</p>
 
     @if ($errors->any())
     
