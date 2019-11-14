@@ -13,20 +13,24 @@ $(function() {
 
 
     $.ajax({
-      type: 'post',
+      type: 'get',
       datatype: 'json',
-      url: 'http://singlepage_app.com/users',
+      url: 'http://singlepage_app.com/users/signed_in',
       async:false,
+      
       data:{
         'email':email,
         'password':password,
         '_token': token,
       }
     })
+ 
 
-    .done(function(data,textStatus, jqXHR ){
+    .done(function(data ){
+      debugger
       // data = $.parseJSON(data);
       // console.log(data);
+
       // console.log(textStatus);
       // console.log(jqXHR);
 
@@ -36,6 +40,7 @@ $(function() {
       // JSではundefinedの時は変数のif文がfalseになる
       data = $.parseJSON(data);
       console.log(data);
+      debugger
       if(data){
         $(".error_box").empty();
         $(".error_box").prepend(data);

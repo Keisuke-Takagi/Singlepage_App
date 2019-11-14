@@ -71,7 +71,7 @@
         <input type="hidden" name="token" value="{{ csrf_token() }}">
 
       </td>
-      <button id='user_create_button' type='submit' class='btn btn-success btn-lg'>新規登録</button>
+      <button id='user_create_button' type='button' class='btn btn-success btn-lg'>新規登録</button>
     </form>
   </div>
 </div>
