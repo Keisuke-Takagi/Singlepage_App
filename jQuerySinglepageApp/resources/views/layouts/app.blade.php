@@ -1,25 +1,26 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang='ja'>
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <meta http-equiv='X-UA-Compatible' content='ie=edge'>
   <link rel='stylesheet' href='https://unpkg.com/ress/dist/ress.min.css'>
-  <link rel='stylesheet' type='text/css' href="{{  asset('css/style.css')  }}">
-  <link href='https://use.fontawesome.com/releases/v5.6.1/css/all.css' rel='stylesheet'>
+  <link rel='stylesheet' type='text/css' href="{{  asset('css/style.css')  }}"> -->
+  <!-- <link href='https://use.fontawesome.com/releases/v5.6.1/css/all.css' rel='stylesheet'> -->
   <!-- jquery cdn -->
-  <script src="https://code.jquery.com/jquery-3.4.1.js"integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.js"integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script> -->
   <!-- jsファイルの読み込み -->
-  <script src="{{asset('js/user_registration.js')}}"></script>
+  <!-- <script src="{{asset('js/user_registration.js')}}"></script>
   
   <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
   <script src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
   <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
   	
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <title>新規登録ページ</title>
-</head>
+  <meta name='viewport' content='width=device-width,initial-scale=1'> -->
+  @extends('layouts.header')
+  @section('content')
+
 
 <body>
   <header id="header">
@@ -28,12 +29,14 @@
         <div class="container-fluid">
           <div class="navbar-header">
             <a class="navbar-brand" href="registration.php">READ-BOOK-RECORDER</a>
+            <p class="header_logout">ログアウトかり</p>
 
             <div class='login-icon'>
             <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
       
             <div class="header_right"> 
               <a href='../login/login'>ログイン</a>
+              <a class="header_logout">ログアウト(仮) </a>
             </div>
           </div>
         </div>
@@ -75,7 +78,7 @@
     </form>
   </div>
 </div>
-  @yield('content')
+
 
   <footer>
       <div id="footermenu" class="inner">
@@ -119,4 +122,4 @@
       </div>
     </footer>
   </body>
-  </html>
+  @endsection

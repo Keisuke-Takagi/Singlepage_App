@@ -129,6 +129,11 @@ label{
 .book-edit-box__title{
   
 }
+.header_right{
+  
+  display: flex;
+
+}
 
 table{
   border-collapse: collapse;
