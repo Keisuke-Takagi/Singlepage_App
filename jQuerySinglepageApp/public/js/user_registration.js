@@ -57,6 +57,59 @@ if('http://singlepage_app.com/users/list' == location.href){
 
   });
 }
+
+// if('http://singlepage_app.com/users/login' == location.href){
+//   $.ajax({
+//     type: 'post',
+//     datatype: 'json',
+//     url: 'http://singlepage_app.com/users/list',
+//     async:false,
+//   })
+// .done(function(data,textStatus, jqXHR ){
+//     // alert("sucess");
+//     data = $.parseJSON(data);
+//     let count = 0;
+//     let password = "";
+//     let email = "";
+//     let list_user = data.list_user;
+//     let list_user_temp = data.list_user
+//     let user_list_html = "";
+//     console.log(data);
+//     console.log(data.user_info);
+//     console.log(data.list_temp);
+//     console.log(data.list_user);
+//     let users_count = data.user_info.email.length;
+//     debugger
+//     while(count < users_count){
+//       email = data.user_info.email[count];
+//       password = data.user_info.password[count];
+//       list_user = list_user.replace("<<count>>",(count + 1));
+//       list_user = list_user.replace("<<user_email>>",email);
+//       list_user = list_user.replace("<<user_password>>",password);
+//       user_list_html = user_list_html + list_user;
+//       list_user = list_user_temp;
+//       count ++;
+//     }
+//     debugger
+
+//     let temp = data.list_temp;
+//     // templateのviewに置換して表示するHTML作成
+
+//     let view = temp.replace("<<user_content>>", user_list_html);
+    
+
+//     // viewの書き換え
+//     $(".main").empty();
+//     $(".main").prepend(view);
+//     $(".header_right").empty();
+//     $(".header_right").append('<p class="header_logout">ログアウト</p>');
+    
+//   })
+//   .fail(function(data){
+//     alert("error!");
+
+//   });
+// }
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
@@ -236,6 +289,27 @@ if('http://singlepage_app.com/users/list' == location.href){
       alert("error!");
     });
   });
+  $(".header_right").on("click", ".header_login", function(){
+    $.ajax({
+      type: 'get',
+      datatype: 'text',
+      url: 'http://singlepage_app.com/users/login',
+    })
+    .done(function(data){
+      console.log(data);
+      $(".main").empty();
+      $(".main").append(data);
 
-
+      // パスの書き換え
+      let URL = location.href;
+      let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/login");
+      history.replaceState(URL, '', URL_changed);
+      debugger
+    })
+    .fail(function(data){
+      alert("error!");
+    });
+    $(".main").empty();
+    $(".main").append(data);
+  });
 });

@@ -1,4 +1,4 @@
-  @extends('layouts.header')
+@extends('layouts.header')
   @section('content')
 
 <body>
@@ -14,7 +14,7 @@
             <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
       
             <div class="header_right"> 
-              <a class="header_login">ログイン</a>
+              <a class="header_login">新規登録</a>
               <a class="header_logout">ログアウト(仮) </a>
             </div>
           </div>
@@ -25,7 +25,7 @@
 </header>
 <div class='main'>
   <div class="json_main">
-    <h1> 新規登録</h1>
+    <h1> ログイン</h1>
     <div class="error_box"></div>
     <p class="header_logout">ログアウトかり</p>
 
@@ -53,7 +53,7 @@
         <input type="hidden" name="token" value="{{ csrf_token() }}">
 
       </td>
-      <button id='user_create_button' type='button' class='btn btn-success btn-lg'>新規登録</button>
+      <button id='user_create_button' type='button' class='btn btn-success btn-lg'>ログイン</button>
     </form>
   </div>
 </div>

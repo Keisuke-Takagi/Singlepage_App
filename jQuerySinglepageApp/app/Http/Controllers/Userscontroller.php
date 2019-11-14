@@ -25,8 +25,17 @@ class Userscontroller extends Controller
   public function index(Request $request){
     // ajax/jsonを使用するため定義
     header("Content-type: application/json; charset=UTF-8");
-
     return view('layouts.app');
+  }
+
+  public function get_login(){
+    header("Content-type: application/json; charset=UTF-8");
+    if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
+      // layoutから変更部分書き換え
+      return view('users.ajax_login');
+    }else{
+      return view('layouts.app_login');
+    }
   }
 
 
