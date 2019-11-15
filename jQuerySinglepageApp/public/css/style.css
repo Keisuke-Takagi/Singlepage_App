@@ -46,10 +46,17 @@ a:hover{
   float: right;
 
 }
+.contents_wrapper{
+  min-height: 100vh;
+  position: relative;/*←相対位置*/
+  padding-bottom: 120px;
+  box-sizing: border-box;
+}
 .main{
   width: 100vw;
   min-height: 300px;
   padding: 13px;
+  margin-bottom:120px ;
 }
 .form-input{
   border: solid 1px black;
@@ -78,6 +85,9 @@ footer{
     color: #fff;
     display: block;
     background-color: black;
+    position: absolute;
+    bottom: 0;
+    display: contents;
 }
 ul{
   display: block;
@@ -101,6 +111,7 @@ label{
   margin-top: 3em;
 }
 #footermenu{
+  height: 120px;
   width: 100vw;
   display: block;
   background-color: black;
@@ -111,6 +122,9 @@ label{
 .title{
   font-weight: bold;
   color: yellowgreen;
+}
+.header_registration{
+  cursor: pointer;
 }
 .footer-link{
   color: white;
@@ -177,4 +191,10 @@ table{
   cursor:pointer;
   display: block;
   float: left;
+}
+.header_login{
+  cursor: pointer;
+}
+tbody{
+overflow-y: scroll;
 }

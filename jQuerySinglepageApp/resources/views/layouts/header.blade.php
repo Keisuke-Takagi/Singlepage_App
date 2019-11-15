@@ -19,5 +19,56 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>新規登録ページ</title>
 </head>
+<body>
+  <header id="header">
+    <div class="app-icons">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="http://singlepage_app.com/users">READ-BOOK-RECORDER</a>
   @yield('content')
+  
+  <footer>
+      <div id="footermenu" class="inner">
+        <ul>
+          <li class="title">ホーム</li>
+          <li><a href="contact.html" class="footer-link">お問い合わせ</a></li>
+          <li><a href="company.html" class="footer-link">会社概要</a></li>
+        </ul>
+        <ul>
+          <li class="title">メニュータイトル01</li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+        </ul>
+        <ul>
+          <li class="title">メニュータイトル02</li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+        </ul>
+        <ul>
+          <li class="title">メニュータイトル03</li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+        </ul>
+        <ul>
+          <li class="title">メニュータイトル04</li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+          <li><a href="#" class="footer-link">メニューサンプル</a></li>
+        </ul>
+      </div>
+    </footer>
+    </div>
+  </body>
   </html>

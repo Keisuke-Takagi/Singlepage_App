@@ -13,10 +13,10 @@ Route::post('/users', 'Userscontroller@post_sign_in');
 
 Route::get('/users/login', 'Userscontroller@get_login')->name('user.login_page');
 
-
+// 新規登録2ページ目
 Route::get('/users/signed_in', 'Userscontroller@signed_in')->middleware('ajax_check');
 
-Route::post('/users/signed_in', 'Userscontroller@post_success_signed_in');
+Route::post('/users/signed_in', 'Userscontroller@post_success_signed_in')->middleware('ajax_check');;
 
 
 // listページのルーティング
@@ -27,7 +27,19 @@ Route::get('/users/list','Userscontroller@get_user_list');
 Route::post('/users/logout','Userscontroller@logout');
 
 
+// ajaxでログインするためのPATH
+Route::post('/ajax/users/login', 'Userscontroller@post_login_ajax')->middleware('ajax_check');
+
+
+// ajaxでtemplateを取得するためだけのパス
+Route::get('/ajax/users/login', 'Userscontroller@get_login_ajax')->middleware('ajax_check');
+
+Route::get('/ajax/users/registration', 'Userscontroller@get_registration_ajax')->middleware('ajax_check');
+
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// 後で消す
+Route::get('/ajax/users/login_check', 'Userscontroller@get_login_check');

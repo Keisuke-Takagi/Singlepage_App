@@ -1,115 +1,5 @@
 $(function() {
 
-console.log(location.href);
-if('http://singlepage_app.com/users/list' == location.href){
-  let token = $(".token").val();
-  $.ajax({
-    type: 'post',
-    datatype: 'json',
-    url: 'http://singlepage_app.com/users/list',
-    async:false,
-    data:{
-      '_token': token,
-    }
-  })
-.done(function(data,textStatus, jqXHR ){
-    // alert("sucess");
-    data = $.parseJSON(data);
-    let count = 0;
-    let password = "";
-    let email = "";
-    let list_user = data.list_user;
-    let list_user_temp = data.list_user
-    let user_list_html = "";
-    console.log(data);
-    console.log(data.user_info);
-    console.log(data.list_temp);
-    console.log(data.list_user);
-    let users_count = data.user_info.email.length;
-    debugger
-    while(count < users_count){
-      email = data.user_info.email[count];
-      password = data.user_info.password[count];
-      list_user = list_user.replace("<<count>>",(count + 1));
-      list_user = list_user.replace("<<user_email>>",email);
-      list_user = list_user.replace("<<user_password>>",password);
-      user_list_html = user_list_html + list_user;
-      list_user = list_user_temp;
-      count ++;
-    }
-    debugger
-
-    let temp = data.list_temp;
-    // templateのviewに置換して表示するHTML作成
-
-    let view = temp.replace("<<user_content>>", user_list_html);
-    
-
-    // viewの書き換え
-    $(".main").empty();
-    $(".main").prepend(view);
-    $(".header_right").empty();
-    $(".header_right").append('<p class="header_logout">ログアウト</p>');
-    
-  })
-  .fail(function(data){
-    alert("error!");
-
-  });
-}
-
-// if('http://singlepage_app.com/users/login' == location.href){
-//   $.ajax({
-//     type: 'post',
-//     datatype: 'json',
-//     url: 'http://singlepage_app.com/users/list',
-//     async:false,
-//   })
-// .done(function(data,textStatus, jqXHR ){
-//     // alert("sucess");
-//     data = $.parseJSON(data);
-//     let count = 0;
-//     let password = "";
-//     let email = "";
-//     let list_user = data.list_user;
-//     let list_user_temp = data.list_user
-//     let user_list_html = "";
-//     console.log(data);
-//     console.log(data.user_info);
-//     console.log(data.list_temp);
-//     console.log(data.list_user);
-//     let users_count = data.user_info.email.length;
-//     debugger
-//     while(count < users_count){
-//       email = data.user_info.email[count];
-//       password = data.user_info.password[count];
-//       list_user = list_user.replace("<<count>>",(count + 1));
-//       list_user = list_user.replace("<<user_email>>",email);
-//       list_user = list_user.replace("<<user_password>>",password);
-//       user_list_html = user_list_html + list_user;
-//       list_user = list_user_temp;
-//       count ++;
-//     }
-//     debugger
-
-//     let temp = data.list_temp;
-//     // templateのviewに置換して表示するHTML作成
-
-//     let view = temp.replace("<<user_content>>", user_list_html);
-    
-
-//     // viewの書き換え
-//     $(".main").empty();
-//     $(".main").prepend(view);
-//     $(".header_right").empty();
-//     $(".header_right").append('<p class="header_logout">ログアウト</p>');
-    
-//   })
-//   .fail(function(data){
-//     alert("error!");
-
-//   });
-// }
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
@@ -120,15 +10,14 @@ if('http://singlepage_app.com/users/list' == location.href){
     let email = $('#new-user-form [name=email]').val();
     let password = $('#new-user-form [name=password]').val();
     let token = $('#new-user-form [name=token]').val();
-    console.log(token);
 
 
     $.ajax({
-      type: 'get',
+      type: 'post',
       datatype: 'json',
       url: 'http://singlepage_app.com/users/signed_in',
       async:false,
-      
+      // form情報の送信
       data:{
         'email':email,
         'password':password,
@@ -138,12 +27,7 @@ if('http://singlepage_app.com/users/list' == location.href){
  
 
     .done(function(data ){
-      debugger
-      // data = $.parseJSON(data);
-      // console.log(data);
 
-      // console.log(textStatus);
-      // console.log(jqXHR);
 
       let user_mail = data["email"];
       console.log(user_mail);
@@ -151,6 +35,7 @@ if('http://singlepage_app.com/users/list' == location.href){
       // JSではundefinedの時は変数のif文がfalseになる
       data = $.parseJSON(data);
 
+      
       if(data){
         $(".error_box").empty();
         $(".error_box").prepend(data);
@@ -167,10 +52,9 @@ if('http://singlepage_app.com/users/list' == location.href){
           $(".header_right").append('<p class="header_logout">ログアウト</p>');
         }
       }else{
-        debugger
+        
         $(".error_box").empty();
       }
-
     })
       
     .fail(function(data){ 
@@ -178,6 +62,88 @@ if('http://singlepage_app.com/users/list' == location.href){
       });
       console.log("通信終了");
   });
+  
+
+    // ログインの処理
+    $(".main").on("click","#user_login_button",  function(e) {
+      e.preventDefault();
+   
+      let count = 0;
+      let password = "";
+      let email = "";
+      let user_list_html = "";
+      // フォームからの取得
+      email = $('#new-user-form [name=email]').val();
+      password = $('#new-user-form [name=password]').val();
+      token = $('#new-user-form [name=token]').val();
+      console.log(token);
+  
+  
+      $.ajax({
+        type: 'post',
+        datatype: 'json',
+        url: 'http://singlepage_app.com/ajax/users/login',
+        async:false,
+        // form情報の送信
+        data:{
+          'email':email,
+          'password':password,
+          '_token': token,
+        }
+      })
+   
+  
+      .done(function(data ){
+ 
+      $(".error_box").empty();
+  
+      let user_mail = data["email"];
+  
+        // JSではundefinedの時は変数のif文がfalseになる
+        data = $.parseJSON(data);
+
+ 
+        if(data){
+          $(".error_box").prepend(data.error);
+          if(data.user_info){
+
+            let list_user = data.list_user;
+            let list_user_temp = data.list_user
+    
+            let users_count = data.user_info.email.length;
+          // whileを使ってhtmlにユーザー情報を置換
+            while(count < users_count){
+              email = data.user_info.email[count];
+              password = data.user_info.password[count];
+              list_user = list_user.replace("<<count>>",(count + 1));
+              list_user = list_user.replace("<<user_email>>",email);
+              list_user = list_user.replace("<<user_password>>",password);
+              user_list_html = user_list_html + list_user;
+              list_user = list_user_temp;
+              count ++;
+            }
+            let temp = data.list_temp;
+            // templateのviewに置換して表示するHTML作成
+      
+            let view = temp.replace("<<user_content>>", user_list_html);
+            
+            // viewの書き換え
+            $(".main").empty();
+            $(".main").prepend(view);
+            $(".header_right").empty();
+            $(".header_right").append('<p class="header_logout">ログアウト</p>');  
+          }
+        }else{
+ 
+          $(".error_box").empty();
+        }
+      })
+        
+      .fail(function(data){ 
+        alert("error!");
+        });
+        console.log("通信終了");
+    });
 
 
   // リストページに行くための処理
@@ -186,6 +152,7 @@ if('http://singlepage_app.com/users/list' == location.href){
     let url = location.href;
     if(url == "http://singlepage_app.com/users/signed_in"){
       let token = $(".token").val();
+      // getはログインチェックに使うためpost
       $.ajax({
         type: 'post',
         datatype: 'json',
@@ -228,7 +195,7 @@ if('http://singlepage_app.com/users/list' == location.href){
             let URL = location.href;
             let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
             history.replaceState(URL, '', URL_changed);
-            debugger
+    
           })
           .fail(function(data){
             alert("error!");
@@ -245,8 +212,6 @@ if('http://singlepage_app.com/users/list' == location.href){
             list_user = list_user_temp;
             count ++;
           }
-      
-
           let temp = data.list_temp;
           // templateのviewに置換して表示するHTML作成
     
@@ -267,6 +232,8 @@ if('http://singlepage_app.com/users/list' == location.href){
     };
   });
 
+
+  // -------------------------------------------------------------headerのイベント
   $(".header_right").on("click", ".header_logout", function(){
 
     $.ajax({
@@ -276,40 +243,68 @@ if('http://singlepage_app.com/users/list' == location.href){
     })
     .done(function(data){
       console.log(data);
+
+      // viewの書き換え
       $(".main").empty();
       $(".main").append(data);
+      $(".header_right").empty();
+      $(".header_right").append('<a class="header_login">ログイン</a>');
 
       // パスの書き換え
       let URL = location.href;
       let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
       history.replaceState(URL, '', URL_changed);
-      debugger
+
     })
     .fail(function(data){
       alert("error!");
     });
   });
+
   $(".header_right").on("click", ".header_login", function(){
     $.ajax({
       type: 'get',
       datatype: 'text',
-      url: 'http://singlepage_app.com/users/login',
+      data: {'page' : 'book_app'},
+      url: 'http://singlepage_app.com/ajax/users/login',
     })
     .done(function(data){
-      console.log(data);
       $(".main").empty();
       $(".main").append(data);
+      $(".header_right").empty();
+      $(".header_right").append('<a class="header_registration">新規登録</a>');
 
       // パスの書き換え
       let URL = location.href;
       let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/login");
       history.replaceState(URL, '', URL_changed);
-      debugger
+
     })
     .fail(function(data){
       alert("error!");
     });
-    $(".main").empty();
-    $(".main").append(data);
+  });
+  $(".header_right").on("click", ".header_registration", function(){
+    $.ajax({
+      type: 'get',
+      datatype: 'text',
+      data: {'page' : 'book_app'},
+      url: 'http://singlepage_app.com/ajax/users/registration',
+    })
+    .done(function(data){
+      $(".main").empty();
+      $(".main").append(data);
+      $(".header_right").empty();
+      $(".header_right").append('<a class="header_login">ログイン</a>');
+
+      // パスの書き換え
+      let URL = location.href;
+      let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
+      history.replaceState(URL, '', URL_changed);
+
+    })
+    .fail(function(data){
+      alert("error!");
+    });
   });
 });
