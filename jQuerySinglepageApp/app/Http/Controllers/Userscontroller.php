@@ -10,9 +10,6 @@ use Illuminate\Routing\Controllers;
 use Illuminate\Contracts\Auth\Authenticatable;
 
 
-
-
-
 class Userscontroller extends Controller
 {
         /**
@@ -21,22 +18,17 @@ class Userscontroller extends Controller
      * @return Response
      */
 
-  // rootパス
+  // rootパス(新規登録viewを返す)
   public function index(Request $request){
     // ajax/jsonを使用するため定義
     header("Content-type: application/json; charset=UTF-8");
     return view('layouts.app');
   }
 
-  // 非同期通信でのloginpage処理
+  // ログインviewを返す
   public function get_login(Request $request){
     header("Content-type: application/json; charset=UTF-8");
-    if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'){
-
-    }else{
-      return view('users.login');
-      
-    }
+    return view('users.login');
   }
 
   // ajax通信でのloginpage処理
@@ -97,15 +89,16 @@ class Userscontroller extends Controller
       $return_error = '<p class="error">'. $error_text . '</p>';
 
       // json型式ででエラーメッセージ返す
-
       $result_array["error"] = $return_error;
       echo json_encode($result_array);
       exit;
     }else{
-
+    // バリデーション成功
     // ログイン処理
     $error_text = $this->user_login($email, $password);
+    
     if($error_text != ""){
+      // ログイン認証失敗
       $return_error =  '<p class="error">'. $error_text . '</p>';
       $result_array["error"] = $return_error;
       echo json_encode($result_array);
@@ -132,14 +125,10 @@ class Userscontroller extends Controller
     }
   }
 
-
-
   // 2ページ目新規登録完了(GET) 
   public function signed_in(Request $request){
 
   }
-
-  
 
   // 新規登録(POST) ajaxからフォーム情報を受け取って登録orエラー出力
   public function post_success_signed_in(Request $request){
@@ -183,8 +172,20 @@ class Userscontroller extends Controller
     $user_instance->email = $email;
     $user_instance->password = $password_hash;
 
-    // DB保存
-    $user_instance->save();
+    DB::beginTransaction();
+    try {
+      // DB保存
+      $user_instance->save();
+      DB::commit();
+    }
+    catch (\Exception $e) {
+      DB::rollback();
+      return 'トランザクション';
+      exit;
+    }
+    
+    // // DB保存
+    // $user_instance->save();
 
     // ログイン処理
     $this->user_login($email, $password);
@@ -201,8 +202,6 @@ class Userscontroller extends Controller
     }
   }
 
-
-
   // リストページ(GET)
   public function get_user_list(Request $request){
 
@@ -211,20 +210,12 @@ class Userscontroller extends Controller
       $user_array = $this->get_info_users();
       $emails = $user_array["email"];
       $passwords = $user_array["password"];
-
       return view('users.list',compact('emails', 'passwords'));
     }else{
       //未ログイン時rootリダイレクト
       return redirect('/users');
     }
   }
-
-
-
-
-
-
-
   
   // リストページ(POST)ajaxで呼ばれる
   public function post_user_list(){
@@ -256,7 +247,6 @@ class Userscontroller extends Controller
     }
   }
 
-
   // ログアウト処理
   public function logout(){
     Auth::logout();
@@ -269,7 +259,6 @@ class Userscontroller extends Controller
       echo 'ログアウト済み';
     }
   }
-
 
   // -------------------private
 

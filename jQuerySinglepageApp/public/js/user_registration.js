@@ -43,10 +43,8 @@ $(function() {
         }
 
     ajax(type, datatype, url, data)
- 
 
     .done(function(data ){
-      debugger
       let user_mail = data["email"];
 
       // JSではundefinedの時は変数のif文がfalseになる
@@ -153,9 +151,7 @@ $(function() {
       type = 'post'
       datatype = 'json'
       url = 'http://singlepage_app.com/users/list'
-      data =  {
-                '_token': token,
-              }
+      data =  { '_token': token, }
       ajax(type, datatype, url, data)
       
       .done(function(data,textStatus, jqXHR ){
