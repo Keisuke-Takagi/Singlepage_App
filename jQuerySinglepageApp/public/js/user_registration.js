@@ -17,30 +17,32 @@ $(function() {
     return base_temp.replace("<<user_content>>", user_list_html);
 
   }
+  
+  // ここでajax通信をする
+  function ajax(type, datatype, url, data){
+    let ajax = $.ajax({ type: type, datatype: datatype, url: url, data: data, })
+    return ajax;
+  }
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
-    // 非同期でのURL書き換え（ok）
-    debugger
 
 
     let email = $('#new-user-form [name=email]').val();
     let password = $('#new-user-form [name=password]').val();
     let token = $('#new-user-form [name=token]').val();
 
+    // ajax情報の定義
+    type = 'post'
+    datatype = 'json'
+    url = 'http://singlepage_app.com/users/signed_in'
+    data = {
+          'email':email,
+          'password':password,
+          '_token': token,
+        }
 
-    $.ajax({
-      type: 'post',
-      datatype: 'json',
-      url: 'http://singlepage_app.com/users/signed_in',
-      async:false,
-      // form情報の送信
-      data:{
-        'email':email,
-        'password':password,
-        '_token': token,
-      }
-    })
+    ajax(type, datatype, url, data)
  
 
     .done(function(data ){
@@ -49,8 +51,6 @@ $(function() {
 
       // JSではundefinedの時は変数のif文がfalseになる
       data = $.parseJSON(data);
-
-      debugger
       
       if(data.error){
         // Laravelのエラーを表示
@@ -82,29 +82,25 @@ $(function() {
       e.preventDefault();
    
       let count = 0;
-      let password = "";
-      let email = "";
       let user_list_html = "";
 
       // フォームからの取得
-      email = $('#new-user-form [name=email]').val();
-      password = $('#new-user-form [name=password]').val();
-      token = $('#new-user-form [name=token]').val();
+      let email = $('#new-user-form [name=email]').val();
+      let password = $('#new-user-form [name=password]').val();
+      let token = $('#new-user-form [name=token]').val();
       console.log(token);
   
   
-      $.ajax({
-        type: 'post',
-        datatype: 'json',
-        url: 'http://singlepage_app.com/ajax/users/login',
-        async:false,
-        // form情報の送信
-        data:{
-          'email':email,
-          'password':password,
-          '_token': token,
-        }
-      })
+
+      type = 'post'
+      datatype = 'json'
+      url = 'http://singlepage_app.com/ajax/users/login'
+      data =  {
+                'email':email,
+                'password':password,
+                '_token': token,
+              }
+      ajax(type, datatype, url, data)
   
       .done(function(data ){
   
@@ -144,7 +140,6 @@ $(function() {
       .fail(function(data){ 
         alert("error!");
         });
-        console.log("通信終了");
     });
 
 
@@ -155,16 +150,15 @@ $(function() {
     if(url == "http://singlepage_app.com/users/signed_in"){
       let token = $(".token").val();
       // getはログインチェックに使うためpost
-      $.ajax({
-        type: 'post',
-        datatype: 'json',
-        url: 'http://singlepage_app.com/users/list',
-        async:false,
-        data:{
-          '_token': token,
-        }
-      })
-    .done(function(data,textStatus, jqXHR ){
+      type = 'post'
+      datatype = 'json'
+      url = 'http://singlepage_app.com/users/list'
+      data =  {
+                '_token': token,
+              }
+      ajax(type, datatype, url, data)
+      
+      .done(function(data,textStatus, jqXHR ){
 
         data = $.parseJSON(data);
         let count = 0;
@@ -202,7 +196,6 @@ $(function() {
             alert("error!");
           });
         }else{
-
           // templateをuser情報から置換したものを変数viewに代入
           let view = Replace_user_info(data, users_count, list_user, base_temp)
 
@@ -225,14 +218,13 @@ $(function() {
 
   // -------------------------------------------------------------headerのイベント
   $(".header_right").on("click", ".header_logout", function(){
+    type = 'post'
+    datatype = 'text'
+    url = 'http://singlepage_app.com/users/logout'
+    data =  {'_token': '',}
+    ajax(type, datatype, url, data)
 
-    $.ajax({
-      type: 'post',
-      datatype: 'text',
-      url: 'http://singlepage_app.com/users/logout',
-    })
     .done(function(data){;
-
       // viewの書き換え
       $(".main").empty();
       $(".main").append(data);
@@ -250,12 +242,12 @@ $(function() {
   });
 
   $(".header_right").on("click", ".header_login", function(){
-    $.ajax({
-      type: 'get',
-      datatype: 'text',
-      data: {'page' : 'book_app'},
-      url: 'http://singlepage_app.com/ajax/users/login',
-    })
+    type = 'get'
+    datatype = 'text'
+    url = 'http://singlepage_app.com/ajax/users/login'
+    data =  {'page' : 'book_app'}
+    ajax(type, datatype, url, data)
+
     .done(function(data){
 
       // viewの書き換え
@@ -275,12 +267,12 @@ $(function() {
     });
   });
   $(".header_right").on("click", ".header_registration", function(){
-    $.ajax({
-      type: 'get',
-      datatype: 'text',
-      data: {'page' : 'book_app'},
-      url: 'http://singlepage_app.com/ajax/users/registration',
-    })
+    type = 'get'
+    datatype = 'text'
+    url = 'http://singlepage_app.com/ajax/users/registration'
+    data = {'page' : 'book_app'}
+    ajax(type, datatype, url, data)
+
     .done(function(data){
 
       // viewの書き換え
