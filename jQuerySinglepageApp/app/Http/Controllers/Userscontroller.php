@@ -144,6 +144,7 @@ class Userscontroller extends Controller
   // 新規登録(POST) ajaxからフォーム情報を受け取って登録orエラー出力
   public function post_success_signed_in(Request $request){
     $error_text = "";
+    $array =[];
 
     $user_instance  = new User();
 
@@ -171,10 +172,9 @@ class Userscontroller extends Controller
       if(array_key_exists("password", $error_message)){
         $error_text .= $error_message["password"][0];
       };
-      $return_error = '<p class="error">'. $error_text . '</p>';
-
+      $array["error"] = '<p class="error">'. $error_text . '</p>';
       // json型式ででエラーメッセージ返す
-      echo json_encode($return_error);
+      echo json_encode($array);
       exit;
     }else{
       // validation成功時(DB保存, ログイン処理, 次ページのviewをjsonで返す)

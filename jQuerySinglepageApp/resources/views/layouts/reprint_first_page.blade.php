@@ -2,7 +2,6 @@
   <div class="json_main">
     <h1> 新規登録</h1>
     <div class="error_box"></div>
-    <p class="header_logout">ログアウトかり</p>
 
     @if ($errors->any())
     

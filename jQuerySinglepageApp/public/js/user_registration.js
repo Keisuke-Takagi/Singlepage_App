@@ -1,10 +1,27 @@
 $(function() {
 
+  function Replace_user_info(data, users_count, list_user, base_temp){
+    let count = 0;
+    let list_user_temp = list_user;
+    let user_list_html = "";
+    while(count < users_count){
+      email = data.user_info.email[count];
+      password = data.user_info.password[count];
+      list_user = list_user.replace("<<count>>",(count + 1));
+      list_user = list_user.replace("<<user_email>>",email);
+      list_user = list_user.replace("<<user_password>>",password);
+      user_list_html = user_list_html + list_user;
+      list_user = list_user_temp;
+      count ++;
+    }
+    return base_temp.replace("<<user_content>>", user_list_html);
+
+  }
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
     // 非同期でのURL書き換え（ok）
-    
+    debugger
 
 
     let email = $('#new-user-form [name=email]').val();
@@ -27,40 +44,36 @@ $(function() {
  
 
     .done(function(data ){
-
-
+      debugger
       let user_mail = data["email"];
-      console.log(user_mail);
 
       // JSではundefinedの時は変数のif文がfalseになる
       data = $.parseJSON(data);
 
+      debugger
       
-      if(data){
+      if(data.error){
+        // Laravelのエラーを表示
         $(".error_box").empty();
-        $(".error_box").prepend(data);
-        if(data.page_info){
-          console.log(data.page_info);
-          // パスの書き換え
-          let URL = location.href;
-          let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/signed_in");
-          history.replaceState(URL, '', URL_changed);
-          // viewの書き換え
-          $(".main").empty();
-          $(".main").prepend(data.page_info);
-          $(".header_right").empty();
-          $(".header_right").append('<p class="header_logout">ログアウト</p>');
-        }
-      }else{
-        
-        $(".error_box").empty();
+        $(".error_box").prepend(data.error);
+      }
+      if(data.page_info){
+        console.log(data.page_info);
+        // パスの書き換え
+        let URL = location.href;
+        let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/signed_in");
+        history.replaceState(URL, '', URL_changed);
+        // viewの書き換え
+        $(".main").empty();
+        $(".main").prepend(data.page_info);
+        $(".header_right").empty();
+        $(".header_right").append('<p class="header_logout">ログアウト</p>');
       }
     })
       
     .fail(function(data){ 
       alert("error!");
       });
-      console.log("通信終了");
   });
   
 
@@ -72,6 +85,7 @@ $(function() {
       let password = "";
       let email = "";
       let user_list_html = "";
+
       // フォームからの取得
       email = $('#new-user-form [name=email]').val();
       password = $('#new-user-form [name=password]').val();
@@ -91,51 +105,39 @@ $(function() {
           '_token': token,
         }
       })
-   
   
       .done(function(data ){
- 
-      $(".error_box").empty();
   
       let user_mail = data["email"];
   
         // JSではundefinedの時は変数のif文がfalseになる
         data = $.parseJSON(data);
 
- 
-        if(data){
-          $(".error_box").prepend(data.error);
-          if(data.user_info){
-
-            let list_user = data.list_user;
-            let list_user_temp = data.list_user
-    
-            let users_count = data.user_info.email.length;
-          // whileを使ってhtmlにユーザー情報を置換
-            while(count < users_count){
-              email = data.user_info.email[count];
-              password = data.user_info.password[count];
-              list_user = list_user.replace("<<count>>",(count + 1));
-              list_user = list_user.replace("<<user_email>>",email);
-              list_user = list_user.replace("<<user_password>>",password);
-              user_list_html = user_list_html + list_user;
-              list_user = list_user_temp;
-              count ++;
-            }
-            let temp = data.list_temp;
-            // templateのviewに置換して表示するHTML作成
-      
-            let view = temp.replace("<<user_content>>", user_list_html);
-            
-            // viewの書き換え
-            $(".main").empty();
-            $(".main").prepend(view);
-            $(".header_right").empty();
-            $(".header_right").append('<p class="header_logout">ログアウト</p>');  
-          }
-        }else{
- 
+        if(data.error){
           $(".error_box").empty();
+          $(".error_box").prepend(data.error);
+        }
+        // LaravelからUser配列が返されているかの確認(入力値が正しい場合は存在)
+        if(data.user_info){
+
+          // templateを置換するview, 置換する回数取得
+          let list_user = data.list_user;
+          let base_temp = data.list_temp;
+          let users_count = data.user_info.email.length;
+
+          // templateをuser情報から置換したものを変数viewに代入
+          let view = Replace_user_info(data, users_count, list_user, base_temp)
+
+          // viewの書き換え
+          $(".main").empty();
+          $(".main").prepend(view);
+          $(".header_right").empty();
+          $(".header_right").append('<p class="header_logout">ログアウト</p>'); 
+
+          // パスの書き換え
+          let URL = location.href;
+          let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/list");
+          history.replaceState(URL, '', URL_changed); 
         }
       })
         
@@ -168,11 +170,11 @@ $(function() {
         let count = 0;
         let password = "";
         let email = "";
-        let user_list_html = "";
+        // let user_list_html = "";
         
         // whileでの書き換え元のhtmlのtemplate取得
         let list_user = data.list_user;
-        let list_user_temp = data.list_user
+        let base_temp = data.list_temp;
 
         let users_count = data.user_info.email.length;
 
@@ -187,7 +189,6 @@ $(function() {
             url: 'http://singlepage_app.com/users/logout',
           })
           .done(function(data){
-            console.log(data);
             $(".main").empty();
             $(".main").append(data);
       
@@ -201,26 +202,15 @@ $(function() {
             alert("error!");
           });
         }else{
-          // whileを使ってhtmlにユーザー情報を置換
-          while(count < users_count){
-            email = data.user_info.email[count];
-            password = data.user_info.password[count];
-            list_user = list_user.replace("<<count>>",(count + 1));
-            list_user = list_user.replace("<<user_email>>",email);
-            list_user = list_user.replace("<<user_password>>",password);
-            user_list_html = user_list_html + list_user;
-            list_user = list_user_temp;
-            count ++;
-          }
-          let temp = data.list_temp;
-          // templateのviewに置換して表示するHTML作成
-    
-          let view = temp.replace("<<user_content>>", user_list_html);
-          
+
+          // templateをuser情報から置換したものを変数viewに代入
+          let view = Replace_user_info(data, users_count, list_user, base_temp)
+
           // viewの書き換え
           $(".main").empty();
           $(".main").prepend(view);
-            // パスの書き換え
+
+          // パスの書き換え
           let URL = location.href;
           let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/list");
           history.replaceState(URL, '', URL_changed);
@@ -241,8 +231,7 @@ $(function() {
       datatype: 'text',
       url: 'http://singlepage_app.com/users/logout',
     })
-    .done(function(data){
-      console.log(data);
+    .done(function(data){;
 
       // viewの書き換え
       $(".main").empty();
@@ -254,7 +243,6 @@ $(function() {
       let URL = location.href;
       let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
       history.replaceState(URL, '', URL_changed);
-
     })
     .fail(function(data){
       alert("error!");
@@ -269,6 +257,8 @@ $(function() {
       url: 'http://singlepage_app.com/ajax/users/login',
     })
     .done(function(data){
+
+      // viewの書き換え
       $(".main").empty();
       $(".main").append(data);
       $(".header_right").empty();
@@ -292,6 +282,8 @@ $(function() {
       url: 'http://singlepage_app.com/ajax/users/registration',
     })
     .done(function(data){
+
+      // viewの書き換え
       $(".main").empty();
       $(".main").append(data);
       $(".header_right").empty();
