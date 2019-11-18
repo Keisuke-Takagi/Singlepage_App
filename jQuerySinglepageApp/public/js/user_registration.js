@@ -1,5 +1,6 @@
 $(function() {
 
+  // リストページのhtmlを置き換える処理
   function Replace_user_info(data, users_count, list_user, base_temp){
     let count = 0;
     let list_user_temp = list_user;
@@ -18,15 +19,26 @@ $(function() {
 
   }
   
-  // ここでajax通信をする
+  // ここでajax通信を呼び出す処理
   function ajax(type, datatype, url, data){
     let ajax = $.ajax({ type: type, datatype: datatype, url: url, data: data, })
     return ajax;
   }
+
+  // template書き換え
+  function replace_template(data){
+    $(".main").empty();
+    $(".main").prepend(data);
+  }
+
+  function replace_error(data){
+    $(".error_box").empty();
+    $(".error_box").prepend(data);
+  }
+
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
-
 
     let email = $('#new-user-form [name=email]').val();
     let password = $('#new-user-form [name=password]').val();
@@ -36,34 +48,31 @@ $(function() {
     type = 'post'
     datatype = 'json'
     url = 'http://singlepage_app.com/users/signed_in'
-    data = {
-          'email':email,
-          'password':password,
-          '_token': token,
-        }
+    data =  {
+              'email':email,
+              'password':password,
+              '_token': token,
+            }
 
     ajax(type, datatype, url, data)
 
     .done(function(data ){
-      let user_mail = data["email"];
 
-      // JSではundefinedの時は変数のif文がfalseになる
       data = $.parseJSON(data);
       
       if(data.error){
         // Laravelのエラーを表示
-        $(".error_box").empty();
-        $(".error_box").prepend(data.error);
+        replace_error(data.error);
       }
       if(data.page_info){
-        console.log(data.page_info);
         // パスの書き換え
         let URL = location.href;
         let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/signed_in");
         history.replaceState(URL, '', URL_changed);
+
         // viewの書き換え
-        $(".main").empty();
-        $(".main").prepend(data.page_info);
+        let view_data = data.page_info;
+        replace_template(view_data);
         $(".header_right").empty();
         $(".header_right").append('<p class="header_logout">ログアウト</p>');
       }
@@ -77,15 +86,12 @@ $(function() {
     // ログインの処理
     $(".main").on("click","#user_login_button",  function(e) {
       e.preventDefault();
-   
-      let count = 0;
-      let user_list_html = "";
 
       // フォームからの取得
       let email = $('#new-user-form [name=email]').val();
       let password = $('#new-user-form [name=password]').val();
       let token = $('#new-user-form [name=token]').val();
-      console.log(token);
+
   
   
 
@@ -99,16 +105,16 @@ $(function() {
               }
       ajax(type, datatype, url, data)
   
-      .done(function(data ){
+      .done(function(data){
   
-      let user_mail = data["email"];
+      // let user_mail = data["email"];
   
         // JSではundefinedの時は変数のif文がfalseになる
         data = $.parseJSON(data);
 
         if(data.error){
-          $(".error_box").empty();
-          $(".error_box").prepend(data.error);
+
+          replace_error(data.error);
         }
         // LaravelからUser配列が返されているかの確認(入力値が正しい場合は存在)
         if(data.user_info){
@@ -122,8 +128,7 @@ $(function() {
           let view = Replace_user_info(data, users_count, list_user, base_temp)
 
           // viewの書き換え
-          $(".main").empty();
-          $(".main").prepend(view);
+          replace_template(view);
           $(".header_right").empty();
           $(".header_right").append('<p class="header_logout">ログアウト</p>'); 
 
@@ -195,8 +200,7 @@ $(function() {
           let view = Replace_user_info(data, users_count, list_user, base_temp)
 
           // viewの書き換え
-          $(".main").empty();
-          $(".main").prepend(view);
+          replace_template(view);
 
           // パスの書き換え
           let URL = location.href;
@@ -246,8 +250,7 @@ $(function() {
     .done(function(data){
 
       // viewの書き換え
-      $(".main").empty();
-      $(".main").append(data);
+      replace_template(data);
       $(".header_right").empty();
       $(".header_right").append('<a class="header_registration">新規登録</a>');
 
@@ -255,7 +258,6 @@ $(function() {
       let URL = location.href;
       let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/login");
       history.replaceState(URL, '', URL_changed);
-
     })
     .fail(function(data){
       alert("error!");
@@ -271,8 +273,7 @@ $(function() {
     .done(function(data){
 
       // viewの書き換え
-      $(".main").empty();
-      $(".main").append(data);
+      replace_template(data);
       $(".header_right").empty();
       $(".header_right").append('<a class="header_login">ログイン</a>');
 
@@ -280,7 +281,6 @@ $(function() {
       let URL = location.href;
       let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
       history.replaceState(URL, '', URL_changed);
-
     })
     .fail(function(data){
       alert("error!");
