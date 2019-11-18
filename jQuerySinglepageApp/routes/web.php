@@ -7,11 +7,11 @@ Route::get('/hello', function (){
     return "aaa";
 });
 
-Route::get('/users', 'Userscontroller@index')->name('user.firstpage');
+Route::get('/users', 'Userscontroller@index')->name('user.firstpage')->middleware('LoginCheck');
 
 Route::post('/users', 'Userscontroller@post_sign_in');
 
-Route::get('/users/login', 'Userscontroller@get_login')->name('user.login_page');
+Route::get('/users/login', 'Userscontroller@get_login')->name('user.login_page')->middleware('LoginCheck');;
 
 // 新規登録2ページ目
 Route::get('/users/signed_in', 'Userscontroller@signed_in')->middleware('ajax_check');
