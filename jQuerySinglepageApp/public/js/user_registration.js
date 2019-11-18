@@ -36,6 +36,12 @@ $(function() {
     $(".error_box").prepend(data);
   }
 
+  function replace_url(next_page_url){
+    let URL = location.href;
+    let URL_changed = URL.replace(URL, next_page_url);
+    history.replaceState(URL, '', URL_changed);
+  }
+
   // 新規登録の処理
   $(".main").on("click","#user_create_button",  function(e) {
     e.preventDefault();
@@ -56,7 +62,7 @@ $(function() {
 
     ajax(type, datatype, url, data)
 
-    .done(function(data ){
+    .done(function(data){
 
       data = $.parseJSON(data);
       
@@ -66,9 +72,7 @@ $(function() {
       }
       if(data.page_info){
         // パスの書き換え
-        let URL = location.href;
-        let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/signed_in");
-        history.replaceState(URL, '', URL_changed);
+        replace_url(url);
 
         // viewの書き換え
         let view_data = data.page_info;
@@ -107,7 +111,6 @@ $(function() {
   
       .done(function(data){
   
-      // let user_mail = data["email"];
   
         // JSではundefinedの時は変数のif文がfalseになる
         data = $.parseJSON(data);
@@ -133,9 +136,7 @@ $(function() {
           $(".header_right").append('<p class="header_logout">ログアウト</p>'); 
 
           // パスの書き換え
-          let URL = location.href;
-          let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/list");
-          history.replaceState(URL, '', URL_changed); 
+          replace_url(url);
         }
       })
         
@@ -175,13 +176,12 @@ $(function() {
         if(data["error"]){
           // postでログイン確認失敗時
           alert("ログインが認められませんでした!");
+          let type = 'post';
+          let datatype = 'text';
           
           // ajax通信を使って新規登録にリダイレクト
-          $.ajax({
-            type: 'post',
-            datatype: 'text',
-            url: 'http://singlepage_app.com/users/logout',
-          })
+          ajax(type, datatype, url, data)
+
           .done(function(data){
             $(".main").empty();
             $(".main").append(data);
@@ -225,15 +225,12 @@ $(function() {
 
     .done(function(data){;
       // viewの書き換え
-      $(".main").empty();
-      $(".main").append(data);
+      replace_template(data);
       $(".header_right").empty();
       $(".header_right").append('<a class="header_login">ログイン</a>');
 
       // パスの書き換え
-      let URL = location.href;
-      let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
-      history.replaceState(URL, '', URL_changed);
+      replace_url(url);
     })
     .fail(function(data){
       alert("error!");
@@ -278,9 +275,7 @@ $(function() {
       $(".header_right").append('<a class="header_login">ログイン</a>');
 
       // パスの書き換え
-      let URL = location.href;
-      let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
-      history.replaceState(URL, '', URL_changed);
+      replace_url(url);
     })
     .fail(function(data){
       alert("error!");
