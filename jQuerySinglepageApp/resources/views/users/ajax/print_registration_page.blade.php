@@ -1,4 +1,4 @@
-
+<div class="contents_main">
   <div class="json_main">
     <h1> 新規登録</h1>
     <div class="error_box"></div>
@@ -29,6 +29,4 @@
       <button id='user_create_button' type='button' class='btn btn-success btn-lg'>新規登録</button>
     </form>
   </div>
-
-
-
+</div>

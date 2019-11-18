@@ -136,8 +136,6 @@ class Userscontroller extends Controller
     $array =[];
 
     $user_instance  = new User();
-
-    // request取得
     $requests = $request->all();
   
     $email = $requests["email"];
@@ -250,7 +248,7 @@ class Userscontroller extends Controller
   // ログアウト処理
   public function logout(){
     Auth::logout();
-    return view('layouts.reprint_first_page');
+    return view('users.ajax.print_registration_page');
     // $page = strval($page);
     // echo  $page;
     if (Auth::check()){
@@ -264,7 +262,7 @@ class Userscontroller extends Controller
 
     // ユーザーをログインさせる
     private function user_login($email, $password){
-      // フォームで登録したemailでログイン
+      // フォーム入力されたemailの検索
       $row_user = "";
       $row_user = DB::table('users')
       ->where('email', $email)
@@ -273,14 +271,16 @@ class Userscontroller extends Controller
   
       // Laravelのコレクションを配列に変換
       if(count($row_user) != 0){
+        // 検索されたemailが存在
         $row_user =   json_decode(json_encode($row_user[0]), true);
         $id = $row_user["id"];
         // 一ページだけログインをかけたい場合はこっち
         // \Auth::onceUsingId($id);
+
         // ログイン処理
         if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
         }else{
-          return 'メールアドレスかパスワードが違います';
+          return 'ログインに失敗しました';
         }
       }else{
         return 'メールアドレスかパスワードが違います';
