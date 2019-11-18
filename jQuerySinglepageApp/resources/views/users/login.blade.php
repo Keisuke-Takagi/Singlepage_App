@@ -1,6 +1,5 @@
 @extends('layouts.header')
 @section('content')
-              <p class="header_logout">ログアウトかり</p>
               <div class='login-icon'>
               <i class='fa fa-user' id='user-login-icon'  aria-hidden='true'></i>
 

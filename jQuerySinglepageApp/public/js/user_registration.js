@@ -73,7 +73,6 @@ $(function() {
       alert("error!");
       });
   });
-  
 
     // ログインの処理
     $(".main").on("click","#user_login_button",  function(e) {
