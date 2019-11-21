@@ -27,6 +27,10 @@ class Userscontroller extends Controller
 
   // ログインviewを返す
   public function get_login(Request $request){
+    if(Auth::check()){
+      echo "aaaa";
+      exit;
+    }
     header("Content-type: application/json; charset=UTF-8");
     return view('users.login');
   }
@@ -70,8 +74,8 @@ class Userscontroller extends Controller
 
     // バリデーションの定義
     $validator = Validator::make($request->all(),[
-      'email' => 'required',
-      'password' => 'required'
+      'email' => 'required|email',
+      'password' => 'required|password_check|minlength'
     ]);
 
     
@@ -127,6 +131,11 @@ class Userscontroller extends Controller
 
   // 2ページ目新規登録完了(GET) 
   public function signed_in(Request $request){
+    $array = [
+      'error' => '<p class="error">ログインしてください </p>',
+      'ajax_access' => 1,
+    ];
+    return json_encode($array);
 
   }
 
@@ -144,7 +153,7 @@ class Userscontroller extends Controller
     // バリデーションの定義
     $validator = Validator::make($request->all(),[
       'email' => 'required|email|unique:users,email',
-      'password' => 'required|string|password_check'
+      'password' => 'required|string|password_check|minlength|max:10'
     ]);
 
     
@@ -182,21 +191,30 @@ class Userscontroller extends Controller
       exit;
     }
     
-    // // DB保存
-    // $user_instance->save();
 
     // ログイン処理
     $this->user_login($email, $password);
 
     // jsに渡すviewの取得
-    $page = view('users.ajax.mainpage');
-    $page = strval($page);
-    
-    $array = [
-      'page_info' => $page
-    ];
+    if(Auth::user()){
+      $page = view('users.ajax.mainpage');
+      $page = strval($page);
+      
+      $array = [
+        'page_info' => $page
+      ];
 
-    return json_encode($array);
+      return json_encode($array);
+    }else{
+      // ユーザー作成に成功し、ログインできていない場合
+      $page = view('layouts.app');
+      $array = [
+        'error' => 'ログインしてください',
+        'external_access' => '1',
+        'page_info' => $page,
+      ];
+      return json_encode($array);
+    }
     }
   }
 
@@ -280,10 +298,10 @@ class Userscontroller extends Controller
         // ログイン処理
         if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
         }else{
-          return 'ログインに失敗しました';
+          return 'パスワードが違います';
         }
       }else{
-        return 'メールアドレスかパスワードが違います';
+        return 'メールアドレスが登録されていません';
       }
     }
 

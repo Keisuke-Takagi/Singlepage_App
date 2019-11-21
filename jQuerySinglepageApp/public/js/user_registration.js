@@ -1,5 +1,6 @@
 $(function() {
 
+  
   // リストページのhtmlを置き換える処理
   function Replace_user_info(data, users_count, list_user, base_temp){
     let count = 0;
@@ -24,6 +25,25 @@ $(function() {
     let ajax = $.ajax({ type: type, datatype: datatype, url: url, data: data, })
     return ajax;
   }
+  function _ajax(type, datatype, url, data, func, errorFunc){
+    let ajax = $.ajax({ type: type, datatype: datatype, url: url, data: data, })
+    ajax.done(function(data) {
+ 
+      data = $.parseJSON(data);
+      
+      if(data.error){
+        // Laravelのエラーを表示
+        replace_error(data.error);
+      } else {
+        func(data);
+      }
+    });
+    ajax.fail();
+    return ajax;
+  }
+
+  // // 外部からajax通信を飛ばされたとき
+  // function external_access()
 
   // template書き換え
   function replace_template(data){
@@ -55,36 +75,36 @@ $(function() {
     datatype = 'json'
     url = 'http://singlepage_app.com/users/signed_in'
     data =  {
-              'email':email,
-              'password':password,
-              '_token': token,
-            }
+      'email':email,
+      'password':password,
+      '_token': token,
+    };
 
-    ajax(type, datatype, url, data)
-
-    .done(function(data){
-
-      data = $.parseJSON(data);
-      
-      if(data.error){
-        // Laravelのエラーを表示
-        replace_error(data.error);
-      }
-      if(data.page_info){
-        // パスの書き換え
-        replace_url(url);
-
-        // viewの書き換え
+    var done = function(data) {
+      if(data.external_access){
+        // ユーザー作成に成功したがログインできていない場合
         let view_data = data.page_info;
-        replace_template(view_data);
-        $(".header_right").empty();
-        $(".header_right").append('<p class="header_logout">ログアウト</p>');
+        $("html").prepend(view_data);
+        $("html").not(":first").remove();
+        replace_error(data);
+        replace_url(url);
+      }else{
+        if(data.page_info){
+          // パスの書き換え
+          replace_url(url);
+          // viewの書き換え
+          let view_data = data.page_info;
+          replace_template(view_data);
+          $(".header_right").empty();
+          $(".header_right").append('<p class="header_logout">ログアウト</p>');
+        }
       }
-    })
-      
-    .fail(function(data){ 
-      alert("error!");
-      });
+    };
+    _ajax(type, datatype, url, data, done);
+    
+
+
+
   });
 
     // ログインの処理
@@ -230,7 +250,7 @@ $(function() {
       $(".header_right").append('<a class="header_login">ログイン</a>');
 
       // パスの書き換え
-      replace_url(url);
+      replace_url("http://singlepage_app.com/users");
     })
     .fail(function(data){
       alert("error!");
@@ -263,9 +283,10 @@ $(function() {
   $(".header_right").on("click", ".header_registration", function(){
     type = 'get'
     datatype = 'text'
-    url = 'http://singlepage_app.com/ajax/users/registration'
+    url = 'http://singlepage_app.com/users'
+    ajax_url = 'http://singlepage_app.com/ajax/users/registration'
     data = {'page' : 'book_app'}
-    ajax(type, datatype, url, data)
+    ajax(type, datatype, ajax_url, data)
 
     .done(function(data){
 

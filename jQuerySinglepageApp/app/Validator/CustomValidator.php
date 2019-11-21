@@ -11,7 +11,13 @@ class CustomValidator extends \Illuminate\Validation\Validator
      
     public function validatePasswordCheck($attribute, $value, $parameters)
     {
-        return preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{5,18}+\z/i', $value);
+        // 英数字一文字以上含みかつ、全てが英数文字のみ
+        return preg_match('/^([a-zA-Z]+(?=[0-9])|[0-9]+(?=[a-zA-Z]))[0-9a-zA-Z]+$/', $value);
     }
+    public function validateMinLength($attribute, $value, $parameters){
+                // 英数字一文字以上含みかつ、全てが英数文字のみ
+                return preg_match('/[!-~]{5,10}/', $value);
+    }
+
 }
 ?>

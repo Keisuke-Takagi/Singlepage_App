@@ -75,6 +75,7 @@ return [
     'unique'               => ':attributeは既に存在します。',
     'url'                  => ':attributeを正しい書式にしてください。',
     'password_check' => 'パスワードは半角英数字を一文字以上含む5文字以上にしてください',
+    'minlength' => 'パスワードは半角英数字を一文字以上含む5文字以上にしてください', 
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -103,6 +104,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
+    ],
 
 ];

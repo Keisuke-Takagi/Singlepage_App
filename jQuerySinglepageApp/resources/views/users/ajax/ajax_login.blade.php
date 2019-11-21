@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <p>パスワード(必須)</p>
-          <input type='text' name='password'  value="{{old('password') }}" class='form-input'>
+          <input type='text' name='password' maxlength="10" placeholder="最大10文字" value="{{old('password') }}" class='form-input'>
         </tr>
         <input type="hidden" name="token" value="{{ csrf_token() }}">
       </td>
