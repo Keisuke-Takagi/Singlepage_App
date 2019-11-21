@@ -101,10 +101,6 @@ $(function() {
       }
     };
     _ajax(type, datatype, url, data, done);
-    
-
-
-
   });
 
     // ログインの処理
@@ -115,22 +111,20 @@ $(function() {
       let email = $('#new-user-form [name=email]').val();
       let password = $('#new-user-form [name=password]').val();
       let token = $('#new-user-form [name=token]').val();
-
-  
-  
-
       type = 'post'
       datatype = 'json'
-      url = 'http://singlepage_app.com/ajax/users/login'
+      ajax_url = 'http://singlepage_app.com/ajax/users/login'
+      url = 'http://singlepage_app.com/users/list'
       data =  {
                 'email':email,
                 'password':password,
                 '_token': token,
               }
-      ajax(type, datatype, url, data)
+      ajax(type, datatype, ajax_url, data)
   
       .done(function(data){
   
+        debugger
   
         // JSではundefinedの時は変数のif文がfalseになる
         data = $.parseJSON(data);
@@ -205,12 +199,10 @@ $(function() {
           .done(function(data){
             $(".main").empty();
             $(".main").append(data);
-      
             // パスの書き換え
             let URL = location.href;
             let URL_changed = URL.replace(URL, "http://singlepage_app.com/users");
             history.replaceState(URL, '', URL_changed);
-    
           })
           .fail(function(data){
             alert("error!");
@@ -218,10 +210,8 @@ $(function() {
         }else{
           // templateをuser情報から置換したものを変数viewに代入
           let view = Replace_user_info(data, users_count, list_user, base_temp)
-
           // viewの書き換え
           replace_template(view);
-
           // パスの書き換え
           let URL = location.href;
           let URL_changed = URL.replace(URL, "http://singlepage_app.com/users/list");

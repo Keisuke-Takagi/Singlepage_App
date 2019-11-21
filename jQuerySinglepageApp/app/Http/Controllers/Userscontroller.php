@@ -100,7 +100,6 @@ class Userscontroller extends Controller
     // バリデーション成功
     // ログイン処理
     $error_text = $this->user_login($email, $password);
-    
     if($error_text != ""){
       // ログイン認証失敗
       $return_error =  '<p class="error">'. $error_text . '</p>';
@@ -123,9 +122,9 @@ class Userscontroller extends Controller
     $user_array = $this->get_info_users();
     $page_html_array["user_info"] = $user_array;
 
-
     // 作った配列をjson型式で返す
-    echo json_encode($page_html_array);
+    return json_encode($page_html_array);
+    exit;
     }
   }
 
@@ -193,7 +192,7 @@ class Userscontroller extends Controller
     
 
     // ログイン処理
-    $this->user_login($email, $password);
+    $error_text = $this->user_login($email, $password);
 
     // jsに渡すviewの取得
     if(Auth::user()){
@@ -265,6 +264,8 @@ class Userscontroller extends Controller
 
   // ログアウト処理
   public function logout(){
+    // $id = Auth::id();
+    // return $id;
     Auth::logout();
     return view('users.ajax.print_registration_page');
     // $page = strval($page);
@@ -274,6 +275,15 @@ class Userscontroller extends Controller
     }else{
       echo 'ログアウト済み';
     }
+  }
+
+  public function re_login_ajax(Request $request){
+    $requests = $request->all();
+  
+    $email = $requests["email"];
+    $password = $requests["password"];
+    $error_text = $this->user_login($email, $password);
+    return "あああ";
   }
 
   // -------------------private
