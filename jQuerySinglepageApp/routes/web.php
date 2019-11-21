@@ -11,8 +11,8 @@ Route::get('/users', 'Userscontroller@index')->name('user.firstpage')->middlewar
 Route::post('/users', 'Userscontroller@post_sign_in');
 
 // 新規登録
-Route::get('/users/signed_in', 'Userscontroller@signed_in')->middleware('ajax_check');
-Route::post('/users/signed_in', 'Userscontroller@post_success_signed_in')->middleware('ajax_check');
+Route::get('/users/signed_in', 'Userscontroller@signed_in')->middleware('ajax_check')->middleware('LoginCheck');
+Route::post('/users/signed_in', 'Userscontroller@post_success_signed_in')->middleware('ajax_check')->middleware('LoginCheck');
 
 // listページのルーティング
 Route::get('/users/list','Userscontroller@get_user_list');
@@ -35,6 +35,10 @@ Route::get('/ajax/users/registration', 'Userscontroller@get_registration_ajax')-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// ajaxでログインしなおす
+Route::post('http://singlepage_app.com/ajax/users/login_auth', 'Userscontroller@re_login_ajax');
+
 
 // 後で消す
 Route::get('/ajax/users/login_check', 'Userscontroller@get_login_check');
