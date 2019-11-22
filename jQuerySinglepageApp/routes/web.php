@@ -15,7 +15,7 @@ Route::get('/users/signed_in', 'Userscontroller@signed_in')->middleware('ajax_ch
 Route::post('/users/signed_in', 'Userscontroller@post_success_signed_in')->middleware('ajax_check')->middleware('LoginCheck');
 
 // listページのルーティング
-Route::get('/users/list','Userscontroller@get_user_list');
+Route::get('/users/list','Userscontroller@get_user_list')->middleware('list_login_check');
 Route::post('/users/list','Userscontroller@post_user_list');
 
 Route::get('/users/login', 'Userscontroller@get_login')->name('user.login_page')->middleware('LoginCheck');

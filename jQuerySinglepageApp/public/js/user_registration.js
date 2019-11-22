@@ -255,7 +255,6 @@ $(function() {
     ajax(type, datatype, url, data)
 
     .done(function(data){
-
       // viewの書き換え
       replace_template(data);
       $(".header_right").empty();

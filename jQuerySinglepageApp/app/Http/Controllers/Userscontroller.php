@@ -19,6 +19,16 @@ class Userscontroller extends Controller
      */
 
   // rootパス(新規登録viewを返す)
+
+  function __construct()
+  {
+    if($_SERVER["REQUEST_URI"] != "/users/list"){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $_SESSION["url"] =  $_SERVER["REQUEST_URI"];
+    }
+  }
   public function index(Request $request){
     // ajax/jsonを使用するため定義
     header("Content-type: application/json; charset=UTF-8");
@@ -27,10 +37,6 @@ class Userscontroller extends Controller
 
   // ログインviewを返す
   public function get_login(Request $request){
-    if(Auth::check()){
-      echo "aaaa";
-      exit;
-    }
     header("Content-type: application/json; charset=UTF-8");
     return view('users.login');
   }
@@ -221,15 +227,10 @@ class Userscontroller extends Controller
   public function get_user_list(Request $request){
 
     // ログインチェック
-    if (Auth::check()){
-      $user_array = $this->get_info_users();
-      $emails = $user_array["email"];
-      $passwords = $user_array["password"];
-      return view('users.list',compact('emails', 'passwords'));
-    }else{
-      //未ログイン時rootリダイレクト
-      return redirect('/users');
-    }
+    $user_array = $this->get_info_users();
+    $emails = $user_array["email"];
+    $passwords = $user_array["password"];
+    return view('users.list',compact('emails', 'passwords'));
   }
   
   // リストページ(POST)ajaxで呼ばれる
